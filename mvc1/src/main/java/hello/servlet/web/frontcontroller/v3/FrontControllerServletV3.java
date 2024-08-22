@@ -33,19 +33,24 @@ public class FrontControllerServletV3 extends HttpServlet {
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println("FrontControllerServletV3.service");
 
+        // 1. 매핑 정보 찾기 (Controller Mapping)
         String requestURI = request.getRequestURI();
-
         ControllerV3 controller = controllerMap.get(requestURI);
         if (controller == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         }
 
+        // Controller의 Parameter들 Mapping
         Map<String, String> paramMap = createParamMap(request);
+
+        // 2. Controller 호출
         ModelView modelView = controller.process(paramMap);
 
+        // 3. View Resolver 호출
         String viewName = modelView.getViewName();
         MyView myView = viewResolver(viewName);
 
+        // 4. View (render) 호출
         myView.render(modelView.getModel(), request, response);
     }
 
