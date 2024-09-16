@@ -25,6 +25,5 @@ public class BeanValidationTest {
             System.out.println("violation = " + violation);
             System.out.println("violation message = " + violation.getMessage());
         }
-
     }
 }
