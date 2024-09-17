@@ -49,6 +49,14 @@ public class ValidationItemControllerV3 {
     public String addItem(@Validated @ModelAttribute Item item, BindingResult bindingResult,
                           RedirectAttributes redirectAttributes, Model model) {
 
+        // Object Error 같은 경우, @ScriptAssert 로 스크립트 체크가 가능하지만, 로직으로 작성하는 걸 더 권장!!
+        if (item.getPrice() != null && item.getQuantity() != null) {
+            int resultPrice = item.getPrice() * item.getQuantity();
+            if (resultPrice < 10_000) {
+                bindingResult.reject("totalPriceMin", new Object[]{10_000, resultPrice}, null);
+            }
+        }
+
         // 검증에 실패하면 다시 입력 폼으로 이동
         if (bindingResult.hasErrors()) {
             log.info("errors : {}", bindingResult);
