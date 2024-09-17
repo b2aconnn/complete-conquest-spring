@@ -79,7 +79,23 @@ public class ValidationItemControllerV3 {
     }
 
     @PostMapping("/{itemId}/edit")
-    public String edit(@PathVariable Long itemId, @ModelAttribute Item item) {
+    public String edit(@PathVariable Long itemId,
+                       @Validated @ModelAttribute Item item,
+                       BindingResult bindingResult) {
+
+        // Object Error 같은 경우, @ScriptAssert 로 스크립트 체크가 가능하지만, 로직으로 작성하는 걸 더 권장!!
+        if (item.getPrice() != null && item.getQuantity() != null) {
+            int resultPrice = item.getPrice() * item.getQuantity();
+            if (resultPrice < 10_000) {
+                bindingResult.reject("totalPriceMin", new Object[]{10_000, resultPrice}, null);
+            }
+        }
+
+        if (bindingResult.hasErrors()) {
+            log.info("errors={}", bindingResult);
+            return "validation/v3/editForm";
+        }
+
         itemRepository.update(itemId, item);
         return "redirect:/validation/v3/items/{itemId}";
     }
