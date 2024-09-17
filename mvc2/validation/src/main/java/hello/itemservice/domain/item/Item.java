@@ -12,7 +12,7 @@ public class Item {
 
     private Long id;
 
-    @NotBlank(message = "공백XXX")
+    @NotBlank(message = "공백 안되유~~")
     private String itemName;
 
     @NotNull

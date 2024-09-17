@@ -46,12 +46,13 @@ public class ValidationItemControllerV3 {
     }
 
     @PostMapping("/add")
-    public String addItem(@Valid @ModelAttribute Item item, BindingResult bindingResult,
+    public String addItem(@Validated @ModelAttribute Item item, BindingResult bindingResult,
                           RedirectAttributes redirectAttributes, Model model) {
 
         // 검증에 실패하면 다시 입력 폼으로 이동
         if (bindingResult.hasErrors()) {
             log.info("errors : {}", bindingResult);
+
             return "validation/v3/addForm";
         }
 
