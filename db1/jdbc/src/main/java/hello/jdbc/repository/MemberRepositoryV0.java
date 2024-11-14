@@ -5,6 +5,7 @@ import hello.jdbc.domain.Member;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.*;
+import java.util.NoSuchElementException;
 
 /**
  * JDBC - DriverManager 사용
@@ -32,6 +33,37 @@ public class MemberRepositoryV0  {
             close(pstmt, conn, null);
         }
 
+    }
+
+    public Member findById(String memberId) throws SQLException {
+        String sql = "select * from member where member_id = ?";
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, memberId);
+
+            rs = pstmt.executeQuery();
+            // ResultSet에 처음에는 데이터를 바라볼 수 없다. 데이터가 있는 지 확인하기 위해서 next()를 호출해줘야 함.
+            // cursor 기반으로 되어 있기 때문에 next() 를 통해 다음 데이터를 가져옴.
+            if (rs.next()) {
+                Member member = new Member();
+                member.setMemberId(rs.getString("member_id"));
+                member.setMoney(rs.getInt("money"));
+                return member;
+            } else {
+                throw new NoSuchElementException("member not found memberId=" + memberId);
+            }
+        } catch (Exception e) {
+            log.error("error", e);
+        } finally {
+            close(pstmt, conn, rs);
+        }
+
+        return new Member();
     }
 
     private static void close(Statement pstmt, Connection conn, ResultSet rs) {
