@@ -1,17 +1,25 @@
-package hello.jdbc.repository;
+ package hello.jdbc.repository;
 
 import hello.jdbc.connection.DBConnectionUtil;
 import hello.jdbc.domain.Member;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.jdbc.support.JdbcUtils;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.NoSuchElementException;
 
 /**
- * JDBC - DriverManager 사용
+ * JDBC - DataSource 사용, JdbcUtils 사용
  */
 @Slf4j
-public class MemberRepositoryV0  {
+public class MemberRepositoryV1 {
+    private final DataSource dataSource;
+
+    public MemberRepositoryV1(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
     public Member save(Member member) throws SQLException {
         String sql = "insert into member(member_id, money) values(?, ?)";
 
@@ -107,35 +115,14 @@ public class MemberRepositoryV0  {
     }
 
     private static void close(Statement pstmt, Connection conn, ResultSet rs) {
-        // resource를 정리할 때는 항상 역순으로 진행해야 한다.
-        // resource를 정리해주지 않으면 커넥션 연결을 끊지 않고 계속 유지하고 있을 수 있음.
-        // 이 상황을 리소스 누수라고 하는데, 결과적으로 커넥션 부족 이슈로 이어질 수 있다.
-        if (rs != null) {
-            try {
-                rs.close();
-            } catch (SQLException e) {
-                log.error("error", e);
-            }
-        }
-
-        if (pstmt != null) {
-            try {
-                pstmt.close();
-            } catch (SQLException e) {
-                log.error("error", e);
-            }
-        }
-
-        if (conn != null) {
-            try {
-                conn.close();
-            } catch (SQLException e) {
-                log.error("error", e);
-            }
-        }
+        JdbcUtils.closeResultSet(rs);
+        JdbcUtils.closeStatement(pstmt);
+        JdbcUtils.closeConnection(conn);
     }
 
-    private Connection getConnection() {
-        return DBConnectionUtil.getConnection();
+    private Connection getConnection() throws SQLException {
+        Connection connection = dataSource.getConnection();
+        log.info("connection = {}, class={}", connection, connection.getClass());
+        return connection;
     }
 }
