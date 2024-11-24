@@ -53,7 +53,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
          @Bean
          MemberServiceV3_3 memberService(MemberRepositoryV3 memberRepository) {
-             return new MemberServiceV3_3(memberRepository);
+              return new MemberServiceV3_3(memberRepository);
          }
      }
 
