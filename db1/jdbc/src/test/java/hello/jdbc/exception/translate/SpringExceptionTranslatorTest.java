@@ -62,4 +62,4 @@ public class SpringExceptionTranslatorTest {
             assertThat(resultEx.getClass()).isEqualTo(BadSqlGrammarException.class);
         }
     }
-} 
+}
