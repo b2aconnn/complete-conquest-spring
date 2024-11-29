@@ -5,8 +5,6 @@ import hello.itemservice.repository.ItemRepository;
 import hello.itemservice.repository.ItemSearchCond;
 import hello.itemservice.repository.ItemUpdateDto;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.mapper.Mapper;
-import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -111,4 +109,4 @@ public class JdbcTemplateItemRepositoryV1 implements ItemRepository {
         log.info("sql={}", sql);
         return jdbcTemplate.query(sql, itemRowMapper(), param.toArray());
     }
-} 
+}
