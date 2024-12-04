@@ -2,10 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-s<mapper namespace="hello.itemservice.repository.mybatis.ItemMapper">
+<mapper namespace="hello.itemservice.repository.mybatis.ItemMapper">
     <insert id="save" useGeneratedKeys="true" keyProperty="id">
         insert into item (item_name, price, quantity)
-        value (#{itemName}, #{price}, #{quantity})
+        values (#{itemName}, #{price}, #{quantity})
     </insert>
 
     <update id="update">
@@ -30,7 +30,7 @@ s<mapper namespace="hello.itemservice.repository.mybatis.ItemMapper">
                 and item_name like concat('%', #{itemName} ,'%')
             </if>
             <if test="maxPrice != null">
-                and price $lt;= #{maxPrice}
+                and price &lt;= #{maxPrice}
             </if>
         </where>
     </select>
