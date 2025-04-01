@@ -13,7 +13,7 @@ public class MemberService {
     private final LogRepository logRepository;
 
     @Transactional
-    public void joinV1(String username) {
+     public void joinV1(String username) {
         Member member = new Member(username);
         Log logMessage = new Log(username);
 
