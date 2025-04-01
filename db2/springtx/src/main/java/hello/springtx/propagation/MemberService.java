@@ -22,7 +22,7 @@ public class MemberService {
         log.info("== memberRepository exit ==");
 
         log.info("== logRepository call ==");
-        logRepository.save(logMessage);
+        logRepository. save(logMessage);
         log.info("== logRepository exit ==");
     }
 
