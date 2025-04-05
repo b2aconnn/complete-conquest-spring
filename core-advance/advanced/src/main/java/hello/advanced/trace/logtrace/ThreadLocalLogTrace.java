@@ -10,6 +10,8 @@ public class ThreadLocalLogTrace implements LogTrace {
     private static final String COMPLETE_PREFIX = "<--";
     private static final String EX_PREFIX = "<X-";
 
+    // 주의 : ThreadLocal을 사용할 때는 꼭 Thread 를 다 사용 후에 remove()를 통해서 자원 정리를 해줘야 한다.
+    // (filter, Intercepter 등 .. 자바에서 제공해주는거라 Filter에서 처리하는 게 낫지 않을까라는 생각이 듦.)
     private ThreadLocal<TraceId> traceIdHolder = new ThreadLocal<>(); // traceId 동기화, 동시성 이슈 X
 
     @Override
