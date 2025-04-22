@@ -37,4 +37,11 @@ public class TemplateMethodTest {
         long resultTime = endTime - startTime;
         log.info("resultTime = {}", resultTime);
     }
+
+    /**
+     * 템플릿 메소드 패턴 적용
+     */
+    void templateMethodV1() {
+         
+    }
 }
