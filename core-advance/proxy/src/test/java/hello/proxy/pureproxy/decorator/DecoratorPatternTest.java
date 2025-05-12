@@ -33,5 +33,5 @@ public class DecoratorPatternTest {
 
         DecoratorPatternClient client = new DecoratorPatternClient(timeDecorator);
         client.execute();
-    } 
+    }
 }
