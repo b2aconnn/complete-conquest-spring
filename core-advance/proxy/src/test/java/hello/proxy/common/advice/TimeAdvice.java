@@ -3,9 +3,6 @@ package hello.proxy.common.advice;
 import lombok.extern.slf4j.Slf4j;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
-import org.springframework.boot.context.properties.bind.validation.BindValidationException;
-
-import java.lang.reflect.Method;
 
 @Slf4j
 public class TimeAdvice implements MethodInterceptor {
