@@ -5,6 +5,7 @@ import hello.proxy.config.AppV2Config;
 import hello.proxy.config.v3_proxyfactory.advice.LogTraceAdvice;
 import hello.proxy.trace.logtrace.LogTrace;
 import org.springframework.aop.Advisor;
+import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.aop.support.NameMatchMethodPointcut;
 import org.springframework.context.annotation.Bean;
@@ -21,11 +22,35 @@ public class AutoProxyConfig {
     // 그래서 프록시 객체를 만들고 싶으면, 사용자는 Advisor 객체를 등록하면 되고, 프록시 객체르 만들고 싶으면 pointcut에 설정하면 됨.
 
     // 이런 방법도 있지만, 스프링에서는 어노테이션 기반으로 더 간단하게 구현하는 방법을 제공해서 굳이 안 쓸 듯?
-    @Bean
+//    @Bean
     public Advisor advisor1(LogTrace logTrace) {
         // pointcut
         NameMatchMethodPointcut pointcut = new NameMatchMethodPointcut();
         pointcut.setMappedNames("request*", "order*", "save*");
+
+        // advice
+        LogTraceAdvice advice = new LogTraceAdvice(logTrace);
+
+        return new DefaultPointcutAdvisor(pointcut, advice);
+    }
+
+//    @Bean
+    public Advisor advisor2(LogTrace logTrace) {
+        // pointcut
+        AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
+        pointcut.setExpression("execution(* hello.proxy.app..*(..))");
+
+        // advice
+        LogTraceAdvice advice = new LogTraceAdvice(logTrace);
+
+        return new DefaultPointcutAdvisor(pointcut, advice);
+    }
+
+    @Bean
+    public Advisor advisor3(LogTrace logTrace) {
+        // pointcut
+        AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
+        pointcut.setExpression("execution(* hello.proxy.app..*(..)) && !execution(* hello.proxy.app..noLog(..))");
 
         // advice
         LogTraceAdvice advice = new LogTraceAdvice(logTrace);
