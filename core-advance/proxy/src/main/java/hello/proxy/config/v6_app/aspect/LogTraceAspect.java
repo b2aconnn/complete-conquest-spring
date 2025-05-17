@@ -8,7 +8,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 
 @Slf4j
-@Aspect
+@Aspect // 관점, 측면
 public class LogTraceAspect {
     private final LogTrace logTrace;
 
